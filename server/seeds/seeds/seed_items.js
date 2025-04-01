@@ -4,7 +4,7 @@
  */
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
-  await knex("table_name").del();
+  await knex("items").del();
 
   try {
     const response = await fetch("https://dummyjson.com/products");
