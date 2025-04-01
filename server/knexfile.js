@@ -1,8 +1,12 @@
 require('dotenv').config();
 
+/**
+ * @type { Object.<string, import("knex").Knex.Config> }
+ */
+
 module.exports = {
   development: {
-    client: 'pg',
+    client: 'postgres',
     connection: {
       host: process.env.DB_HOST || 'localhost',
       user: process.env.DB_USER || 'inventoryuser',
