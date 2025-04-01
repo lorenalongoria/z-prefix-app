@@ -6,6 +6,7 @@ const API_URL = 'http://localhost:3001';
 function Inventory() {
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchItems() {
@@ -21,10 +22,16 @@ function Inventory() {
       } catch (err) {
         setError('Error fetching items.');
         console.error('Fetch error:', err);
+      } finally {
+        setLoading(false);
       }
     }
     fetchItems();
   }, []);
+
+  if (loading) {
+    return <p>Loading inventory...</p>;
+  }
 
   return (
     <div>
