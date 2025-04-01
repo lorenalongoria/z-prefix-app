@@ -1,17 +1,19 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './site-pages/home';
+import Register from './site-pages/register';
+import Login from './site-pages/login';
+import Inventory from './site-pages/inventory';
 import "./App.css";
 
 function App() {
   return (
     <Router>
       <div>
-        {/* Navigation can be added here if desired */}
         <Routes>
-          <Route path="/" element={<Inventory />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/items/new" element={<CreateItem />} />
-          <Route path="/items/:id" element={<ItemDetails />} />
-          <Route path="/items/:id/edit" element={<EditItem />} />
+          <Route path="/inventory" element={<Inventory />} />
         </Routes>
       </div>
     </Router>
