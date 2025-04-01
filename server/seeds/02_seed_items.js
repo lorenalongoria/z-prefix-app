@@ -8,7 +8,7 @@ exports.seed = async function (knex) {
 
   try {
     console.log("Fetching products from DummyJSON...");
-    const response = await fetch("https://dummyjson.com/products");
+    const response = await fetch("'https://dummyjson.com/products?limit=10&skip=10&select=title,price'");
     const data = await response.json();
     console.log("Fetched data:", data);
     if (!data.products || data.products.length === 0) {
