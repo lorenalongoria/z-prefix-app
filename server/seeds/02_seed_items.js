@@ -17,12 +17,11 @@ exports.seed = async function (knex) {
     }
     console.log(`Fetched ${data.products.length} products.`);
 
-    const minUserId = 2;
-    const maxUserId = 31;
+    const userIds = await knex("users").pluck("id");
+    console.log("Available user IDs:", userIds);
 
     const items = data.products.map((product) => ({
-      user_id:
-        Math.floor(Math.random() * (maxUserId - minUserId + 1)) + minUserId,
+      user_id: userIds[Math.floor(Math.random() * userIds.length)],
       item_name: product.title,
       description: product.description,
       quantity: product.stock,
