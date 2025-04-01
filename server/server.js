@@ -1,15 +1,15 @@
 const express = require("express");
 const app = express();
-const PORT = 5000;
+const PORT = 3001;
 
 app.use(express.json());
+
+const useRoutes = require("./routes/users");
+const itemRoutes = require("./routes/items");
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-
-const useRoutes = require("./routes/users");
-const itemRoutes = require("./routes/items");
 
 app.use("/api/users", useRoutes);
 app.use("/api/items", itemRoutes);
