@@ -69,7 +69,7 @@ function Inventory() {
 
   return (
     <div>
-      <h2>Inventory</h2>
+      <h2>Current Inventory</h2>
       <h3 style={{ color: "green" }}>{welcomeMessage}</h3>
       <button>Add New Item</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
