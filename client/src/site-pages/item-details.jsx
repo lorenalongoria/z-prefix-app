@@ -7,8 +7,13 @@ function ItemDetails() {
   const [item, setItem] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
     async function fetchItem() {
       try {
         const response = await fetch(`/api/items/${id}`);
@@ -50,17 +55,18 @@ function ItemDetails() {
       <p>
         <strong>Quantity:</strong> {item.quantity}
       </p>
-
       <div style={{ marginTop: "1rem" }}>
         <button onClick={() => navigate("/inventory")}>
           Back to Inventory
         </button>
-        <button
-          onClick={() => navigate(`/items/${id}/edit`)}
-          style={{ marginLeft: "1rem" }}
-        >
-          Edit Item
-        </button>
+        {user && (
+          <button
+            onClick={() => navigate(`/items/${id}/edit`)}
+            style={{ marginLeft: "1rem" }}
+          >
+            Edit Item
+          </button>
+        )}
       </div>
     </div>
   );
