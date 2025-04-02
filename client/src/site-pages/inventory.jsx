@@ -11,7 +11,7 @@ function Inventory() {
   useEffect(() => {
     async function fetchItems() {
       try {
-        const response = await fetch(`${API_URL}/api/items`);
+        const response = await fetch('/api/items');
         if (response.ok) {
           const data = await response.json();
           setItems(data);
