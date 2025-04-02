@@ -6,6 +6,10 @@ const knex = require("../db");
 router.post("/register", async (req, res) => {
   try {
   const { first_name, last_name, username, password } = req.body;
+  const existingUser = await knex("users").where({ username }).first();
+  if (existingUser) {
+    return res.status(400).json({ error: "The details you entered match an existing account." });
+  }
   const [newUser] = await knex("users")
     .insert({ first_name, last_name, username, password })
     .returning("*");
@@ -22,7 +26,7 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     const user = await knex("users").where({ username, password }).first();
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid credentials. Please try again." });
     }
     res.json(user);
   } catch (error) {
