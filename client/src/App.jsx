@@ -4,7 +4,6 @@ import Register from "./site-pages/register";
 import Login from "./site-pages/login";
 import Inventory from "./site-pages/inventory";
 import ItemDetails from "./site-pages/item-details";
-// import ItemEdit from "./site-pages/item-edit";
 import Header from "./assets/header";
 import "./App.css";
 
@@ -19,7 +18,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/items/:id" element={<ItemDetails />} />
-          {/* <Route path="/items/:id/edit" element={<ItemEdit />} /> */}
         </Routes>
       </div>
     </Router>
