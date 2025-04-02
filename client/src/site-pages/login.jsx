@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const API_URL = "http://localhost:3001";
 
@@ -46,7 +47,7 @@ function Login() {
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Inventory Manager Login</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleLogin}>
         <div>
@@ -71,8 +72,13 @@ function Login() {
             required
           />
         </div>
+        <br></br>
         <button type="submit">Login</button>
       </form>
+      <p>Not an inventory manager?</p>
+      <Link to={"/inventory"}>
+        <button>Continue as Visitor</button>
+      </Link>
     </div>
   );
 }

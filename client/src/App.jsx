@@ -3,12 +3,14 @@ import Home from './site-pages/home';
 import Register from './site-pages/register';
 import Login from './site-pages/login';
 import Inventory from './site-pages/inventory';
+import Header from './site-pages/header';
 import "./App.css";
 
 function App() {
   return (
     <Router>
       <div>
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />

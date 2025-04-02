@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 function Home() {
   return (
     <div>
-      <h1>Online Store Database</h1>
       <h2>Inventory Managers:</h2>
       <p>To view or edit items, please login or create an account.</p>
       <Link to={"/login"}>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const API_URL = "http://localhost:3001";
 
@@ -47,7 +48,8 @@ function Register() {
 
   return (
     <div className="register-container">
-      <h2>Register</h2>
+      <h2>Create an Account</h2>
+      <p>If you are an inventory manager, please proceed with account registration.</p>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -94,8 +96,13 @@ function Register() {
             required
           />
         </div>
+        <br></br>
         <button type="submit">Register</button>
       </form>
+      <p>Not an inventory manager?</p>
+      <Link to={"/inventory"}>
+        <button>Continue as Visitor</button>
+      </Link>
     </div>
   );
 }
