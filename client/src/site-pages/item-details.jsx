@@ -8,6 +8,7 @@ function ItemDetails() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -34,6 +35,28 @@ function ItemDetails() {
     fetchItem();
   }, [id]);
 
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (!confirmDelete) return;
+    try {
+      const response = await fetch(`/api/items/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        navigate("/inventory");
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || "Failed to delete item.");
+      }
+    } catch (err) {
+      setError("Error deleting item.");
+      console.error("Delete error:", err);
+    }
+  };
+
   if (loading) {
     return <p>Loading item details...</p>;
   }
@@ -52,24 +75,41 @@ function ItemDetails() {
       <p>
         <strong>Description:</strong> {item.description}
       </p>
-      <p>
         <strong>Quantity:</strong> {item.quantity}
-      </p>
-      <div style={{ marginTop: "1rem" }}>
-        <button onClick={() => navigate("/inventory")}>
-          Back to Inventory
-        </button>
+        <div style={{ marginTop: "1rem" }}>
+        <button onClick={() => navigate("/inventory")}>Back to Inventory</button>
         {user && (
-          <button
-            onClick={() => navigate(`/items/${id}/edit`)}
-            style={{ marginLeft: "1rem" }}
-          >
-            Edit Item
-          </button>
+          <>
+            <button
+              onClick={() => navigate(`/items/${id}/edit`)}
+              style={{ marginLeft: "1rem" }}
+            >
+              Edit Item
+            </button>
+            <button
+              onClick={() => setShowModal(true)}
+              style={{ marginLeft: "1rem"}}
+            >
+              Delete Item
+            </button>
+          </>
         )}
       </div>
+      {showModal && (
+        <div>
+          <div>
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this item?</p>
+            <button onClick={handleDelete} style={{ backgroundColor: "red", color: "white", marginRight: "1rem" }}>
+              Yes, Delete
+            </button>
+            <button onClick={() => setShowModal(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
 
 export default ItemDetails;
