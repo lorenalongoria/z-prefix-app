@@ -41,6 +41,12 @@ function Inventory() {
     window.location.reload();
   };
 
+  const previewText = (text, maxLength) => {
+    if (!text) return "";
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
+
+
   if (loading) {
     return <p>Loading inventory...</p>;
   }
@@ -62,7 +68,7 @@ function Inventory() {
           {items.map((item) => (
             <li key={item.id}>
               <strong>{item.item_name}</strong> <br />
-              {item.description} <br />
+              {previewText(item.description, 100)} <br />
               Quantity: {item.quantity} <br />
               <Link to={`/items/${item.id}`}>View Details</Link>
             </li>
