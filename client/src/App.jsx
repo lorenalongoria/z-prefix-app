@@ -1,10 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './site-pages/home';
-import Register from './site-pages/register';
-import Login from './site-pages/login';
-import Inventory from './site-pages/inventory';
-import ItemDetails from './site-pages/item-details';
-import Header from './site-pages/header';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./site-pages/home";
+import Register from "./site-pages/register";
+import Login from "./site-pages/login";
+import Inventory from "./site-pages/inventory";
+import ItemDetails from "./site-pages/item-details";
+import ItemEdit from "./site-pages/item-edit";
+import Header from "./site-pages/header";
 import "./App.css";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/items/:id" element={<ItemDetails />} />
+          <Route path="/items/:id/edit" element={<ItemEdit />} />
         </Routes>
       </div>
     </Router>
