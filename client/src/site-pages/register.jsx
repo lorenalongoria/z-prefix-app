@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Modal from "../assets/modal";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ function Register() {
   });
   const [error, setError] = useState("");
   const [LoggedIn, setLoggedIn] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,6 +61,9 @@ function Register() {
     setFormData({ first_name: "", last_name: "", username: "", password: "" });
     setError("");
   };
+  const handleLogoutClick = () => {
+    setModalOpen(true);
+  };
 
   if (LoggedIn) {
     const storedUser = localStorage.getItem("user");
@@ -67,9 +72,31 @@ function Register() {
       <div>
         <h2>Register</h2>
         <p style={{ color: "green" }}>
-          You are already logged in as {user.first_name} {user.last_name}. To register another account, please logout.
+          You are already logged in as {user.first_name} {user.last_name}. To
+          register another account, please logout.
         </p>
-        <button onClick={handleLogout}>Logout</button>
+        <button onClick={handleLogoutClick}>Logout</button>
+
+        <Modal
+          isOpen={modalOpen}
+          title="Confirm Logout"
+          onClose={() => setModalOpen(false)}
+        >
+          <p>Are you sure you want to logout?</p>
+          <div style={{ marginTop: "1rem" }}>
+            <button
+              onClick={handleLogout}
+              style={{
+                backgroundColor: "red",
+                color: "white",
+                marginRight: "1rem",
+              }}
+            >
+              Yes, Logout
+            </button>
+            <button onClick={() => setModalOpen(false)}>Cancel</button>
+          </div>
+        </Modal>
       </div>
     );
   }

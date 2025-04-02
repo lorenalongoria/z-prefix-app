@@ -91,7 +91,7 @@ function Inventory() {
       {user ? (
         <button onClick={handleLogoutClick}>Logout</button>
       ) : (
-        <button onClick={handleSignIn}>Sign In</button>
+        <button onClick={handleSignIn}>Login</button>
       )}
       <Modal
         isOpen={ModalOpen}
