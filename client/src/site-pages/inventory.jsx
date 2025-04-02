@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Inventory() {
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    const parsedUser = userData ? JSON.parse(userData) : null;
+    const storedUser = localStorage.getItem("user");
+    // Parse the stored user (if any) to get an object
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     setUser(parsedUser);
 
     async function fetchItems() {
       try {
-        const url = parsedUser
-          ? `/api/items?user_id=${parsedUser.id}`
-          : `/api/items`;
+        // Use the parsed user object to build the URL
+        const url = parsedUser ? `/api/items?user_id=${parsedUser.id}` : `/api/items`;
         const response = await fetch(url);
         if (!response.ok) {
           const errorData = await response.json();
@@ -33,7 +34,7 @@ function Inventory() {
       }
     }
     fetchItems();
-  }, []);
+  }, []); // Only run once on mount
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -41,11 +42,14 @@ function Inventory() {
     window.location.reload();
   };
 
+  const handleSignIn = () => {
+    navigate("/login");
+  };
+
   const previewText = (text, maxLength) => {
     if (!text) return "";
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
-
 
   if (loading) {
     return <p>Loading inventory...</p>;
@@ -59,7 +63,9 @@ function Inventory() {
     <div>
       <h2>Inventory</h2>
       <h3 style={{ color: "green" }}>{welcomeMessage}</h3>
-      <button>Add New Item</button>
+      <Link to="/items/new">
+        <button>Add New Item</button>
+      </Link>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {items.length === 0 ? (
         <p>No items found.</p>
@@ -76,9 +82,11 @@ function Inventory() {
         </ul>
       )}
       <br />
-      <Link to="/items/new">
-        <button onClick={handleLogout}>Sign out</button>
-      </Link>
+      {user ? (
+        <button onClick={handleLogout}>Sign Out</button>
+      ) : (
+        <button onClick={handleSignIn}>Sign In</button>
+      )}
     </div>
   );
 }
