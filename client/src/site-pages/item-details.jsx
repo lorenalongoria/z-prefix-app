@@ -72,11 +72,6 @@ function ItemDetails() {
   };
 
   const handleDelete = async () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this item?"
-    );
-    if (!confirmDelete) return;
-
     try {
       const response = await fetch(`/api/items/${id}`, {
         method: "DELETE",
