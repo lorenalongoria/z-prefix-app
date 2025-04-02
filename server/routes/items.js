@@ -18,7 +18,11 @@ router.post("/", async (req, res) => {
 //Story #4 - get all items
 router.get("/", async (req, res) => {
   try {
-    const items = await knex("items").select("*");
+    let query = knex("items").select("*");
+    if (req.query.user_id) {
+      query = query.where({ user_id: req.query.user_id });
+    }
+    const items = await query;
     res.status(200).json(items);
   } catch (error) {
     res.status(500).json({ error: error.message });

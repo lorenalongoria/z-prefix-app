@@ -1,17 +1,23 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-
-const API_URL = "http://localhost:3001";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
   const [userData, setUserData] = useState({
     username: "",
     password: "",
   });
-
   const [error, setError] = useState("");
+  const [LoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +32,7 @@ function Login() {
     setError("");
 
     try {
-      const response = await fetch('/api/users/login', {
+      const response = await fetch("/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -34,6 +40,7 @@ function Login() {
 
       if (response.ok) {
         const user = await response.json();
+        localStorage.setItem("user", JSON.stringify(user));
         navigate("/inventory");
       } else {
         const data = await response.json();
@@ -44,6 +51,30 @@ function Login() {
       console.error("Login error:", err);
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setLoggedIn(false);
+    setUserData({ username: "", password: "" });
+    setError("");
+  };
+
+  if (LoggedIn) {
+    const storedUser = localStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : {};
+    return (
+      <div>
+        <h2>Inventory Manager Login</h2>
+        <p style={{ color: "green" }}>
+          You are already logged in as {user.first_name} {user.last_name}.
+        </p>
+        <button onClick={handleLogout}>Logout</button>
+        <Link to={"/inventory"}>
+          <button>View My Inventory</button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div>

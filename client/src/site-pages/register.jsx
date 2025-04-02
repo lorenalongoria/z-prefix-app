@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-
-const API_URL = "http://localhost:3001";
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -12,7 +9,17 @@ function Register() {
     password: "",
   });
   const [error, setError] = useState("");
+  const [LoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,7 +34,7 @@ function Register() {
     setError("");
 
     try {
-      const response = await fetch('/api/users/register', {
+      const response = await fetch("/api/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -46,10 +53,34 @@ function Register() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setLoggedIn(false);
+    setFormData({ first_name: "", last_name: "", username: "", password: "" });
+    setError("");
+  };
+
+  if (LoggedIn) {
+    const storedUser = localStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : {};
+    return (
+      <div>
+        <h2>Register</h2>
+        <p style={{ color: "green" }}>
+          You are already logged in as {user.first_name} {user.last_name}. To register another account, please logout.
+        </p>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    );
+  }
+
   return (
     <div className="register-container">
       <h2>Create an Account</h2>
-      <p>If you are an inventory manager, please proceed with account registration.</p>
+      <p>
+        If you are an inventory manager, please proceed with account
+        registration.
+      </p>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>

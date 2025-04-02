@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-
-const API_URL = 'http://localhost:3001';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Inventory() {
   const [items, setItems] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const userData = localStorage.getItem("user");
+    const parsedUser = userData ? JSON.parse(userData) : null;
+    setUser(parsedUser);
+
     async function fetchItems() {
       try {
-        const response = await fetch('/api/items');
-        if (response.ok) {
+        const url = parsedUser
+          ? `/api/items?user_id=${parsedUser.id}`
+          : `/api/items`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          const errorData = await response.json();
+          setError(errorData.error || "Failed to load items.");
+        } else {
           const data = await response.json();
           setItems(data);
-        } else {
-          const errorData = await response.json();
-          setError(errorData.error || 'Failed to load items.');
         }
       } catch (err) {
-        setError('Error fetching items.');
-        console.error('Fetch error:', err);
+        setError("Error fetching items.");
+        console.error("Fetch error:", err);
       } finally {
         setLoading(false);
       }
@@ -33,10 +39,15 @@ function Inventory() {
     return <p>Loading inventory...</p>;
   }
 
+  const welcomeMessage = user
+    ? `Welcome ${user.first_name}! View your inventory items below:`
+    : "Welcome visitor! View our entire inventory below:";
+
   return (
     <div>
       <h2>Inventory</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <h3>{welcomeMessage}</h3>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       {items.length === 0 ? (
         <p>No items found.</p>
       ) : (
