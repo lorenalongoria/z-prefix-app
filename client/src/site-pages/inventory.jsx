@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Inventory() {
@@ -35,6 +35,12 @@ function Inventory() {
     fetchItems();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    window.location.reload();
+  };
+
   if (loading) {
     return <p>Loading inventory...</p>;
   }
@@ -46,7 +52,8 @@ function Inventory() {
   return (
     <div>
       <h2>Inventory</h2>
-      <h3>{welcomeMessage}</h3>
+      <h3 style={{ color: "green" }}>{welcomeMessage}</h3>
+      <button>Add New Item</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {items.length === 0 ? (
         <p>No items found.</p>
@@ -64,7 +71,7 @@ function Inventory() {
       )}
       <br />
       <Link to="/items/new">
-        <button>Add New Item</button>
+        <button onClick={handleLogout}>Sign out</button>
       </Link>
     </div>
   );
