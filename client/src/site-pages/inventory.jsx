@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Modal from "../assets/modal";
 
 function Inventory() {
   const [items, setItems] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [ModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    // Parse the stored user (if any) to get an object
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     setUser(parsedUser);
 
     async function fetchItems() {
       try {
-        // Use the parsed user object to build the URL
-        const url = parsedUser ? `/api/items?user_id=${parsedUser.id}` : `/api/items`;
+        const url = parsedUser
+          ? `/api/items?user_id=${parsedUser.id}`
+          : `/api/items`;
         const response = await fetch(url);
         if (!response.ok) {
           const errorData = await response.json();
@@ -34,12 +36,16 @@ function Inventory() {
       }
     }
     fetchItems();
-  }, []); // Only run once on mount
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
+    setModalOpen(false);
     window.location.reload();
+  };
+  const handleLogoutClick = () => {
+    setModalOpen(true);
   };
 
   const handleSignIn = () => {
@@ -48,7 +54,9 @@ function Inventory() {
 
   const previewText = (text, maxLength) => {
     if (!text) return "";
-    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
   };
 
   if (loading) {
@@ -63,9 +71,7 @@ function Inventory() {
     <div>
       <h2>Inventory</h2>
       <h3 style={{ color: "green" }}>{welcomeMessage}</h3>
-      <Link to="/items/new">
-        <button>Add New Item</button>
-      </Link>
+      <button>Add New Item</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {items.length === 0 ? (
         <p>No items found.</p>
@@ -83,10 +89,26 @@ function Inventory() {
       )}
       <br />
       {user ? (
-        <button onClick={handleLogout}>Sign Out</button>
+        <button onClick={handleLogoutClick}>Logout</button>
       ) : (
         <button onClick={handleSignIn}>Sign In</button>
       )}
+      <Modal
+        isOpen={ModalOpen}
+        title="Confirm Logout"
+        onClose={() => setModalOpen(false)}
+      >
+        <p>Are you sure you want to logout?</p>
+        <div style={{ marginTop: "1rem" }}>
+          <button onClick={handleLogout} style={{ backgroundColor: "red", color: "white", marginRight: "1rem" }}>Yes, Logout</button>
+          <button
+            onClick={() => setModalOpen(false)}
+            style={{ marginLeft: "1rem" }}
+          >
+            Cancel
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 }

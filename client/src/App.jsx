@@ -5,7 +5,7 @@ import Login from "./site-pages/login";
 import Inventory from "./site-pages/inventory";
 import ItemDetails from "./site-pages/item-details";
 import ItemEdit from "./site-pages/item-edit";
-import Header from "./site-pages/header";
+import Header from "./assets/header";
 import "./App.css";
 
 function App() {

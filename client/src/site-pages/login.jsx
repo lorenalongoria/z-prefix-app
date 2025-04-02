@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Modal from "../assets/modal";
 
 function Login() {
   const [userData, setUserData] = useState({
@@ -8,6 +9,7 @@ function Login() {
   });
   const [error, setError] = useState("");
   const [LoggedIn, setLoggedIn] = useState(false);
+  const [ModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,6 +59,10 @@ function Login() {
     setLoggedIn(false);
     setUserData({ username: "", password: "" });
     setError("");
+    setModalOpen(false);
+  };
+  const handleLogoutClick = () => {
+    setModalOpen(true);
   };
 
   if (LoggedIn) {
@@ -68,10 +74,35 @@ function Login() {
         <p style={{ color: "green" }}>
           You are already logged in as {user.first_name} {user.last_name}.
         </p>
-        <button onClick={handleLogout}>Logout</button>
+        <button onClick={() => setModalOpen(true)}>Logout</button>
         <Link to={"/inventory"}>
           <button>View My Inventory</button>
         </Link>
+        <Modal
+          isOpen={ModalOpen}
+          title="Confirm Logout"
+          onClose={() => setModalOpen(false)}
+        >
+          <p>Are you sure you want to logout?</p>
+          <div style={{ marginTop: "1rem" }}>
+            <button
+              onClick={handleLogout}
+              style={{
+                backgroundColor: "red",
+                color: "white",
+                marginRight: "1rem",
+              }}
+            >
+              Yes, Logout
+            </button>
+            <button
+              onClick={() => setModalOpen(false)}
+              style={{ marginLeft: "1rem" }}
+            >
+              Cancel
+            </button>
+          </div>
+        </Modal>
       </div>
     );
   }
