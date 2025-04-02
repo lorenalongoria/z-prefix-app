@@ -71,7 +71,7 @@ function Inventory() {
     <div>
       <h2>Current Inventory</h2>
       <h3 style={{ color: "green" }}>{welcomeMessage}</h3>
-      <button>Add New Item</button>
+      {user && <button style={{ marginBottom: "1rem" }}>Add New Item</button>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {items.length === 0 ? (
         <p>No items found.</p>
@@ -100,7 +100,16 @@ function Inventory() {
       >
         <p>Are you sure you want to logout?</p>
         <div style={{ marginTop: "1rem" }}>
-          <button onClick={handleLogout} style={{ backgroundColor: "red", color: "white", marginRight: "1rem" }}>Yes, Logout</button>
+          <button
+            onClick={handleLogout}
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              marginRight: "1rem",
+            }}
+          >
+            Yes, Logout
+          </button>
           <button
             onClick={() => setModalOpen(false)}
             style={{ marginLeft: "1rem" }}
