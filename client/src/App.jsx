@@ -4,6 +4,7 @@ import Register from "./site-pages/register";
 import Login from "./site-pages/login";
 import Inventory from "./site-pages/inventory";
 import ItemDetails from "./site-pages/item-details";
+import NewItem from "./site-pages/add-item";
 import Header from "./assets/header";
 import "./App.css";
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/items/:id" element={<ItemDetails />} />
+          <Route path="/items/new" element={<NewItem />} />
         </Routes>
       </div>
     </Router>

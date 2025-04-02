@@ -71,7 +71,14 @@ function Inventory() {
     <div>
       <h2>Current Inventory</h2>
       <h3 style={{ color: "green" }}>{welcomeMessage}</h3>
-      {user && <button style={{ marginBottom: "1rem" }}>Add New Item</button>}
+      {user && (
+        <button
+          onClick={() => navigate("/items/new")}
+          style={{ marginBottom: "1rem" }}
+        >
+          Add New Item
+        </button>
+      )}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {items.length === 0 ? (
         <p>No items found.</p>
