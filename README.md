@@ -29,9 +29,21 @@ Create a new database and update `server/knexfile.js` if needed:
 ```js
 module.exports = {
   development: {
-    client: 'pg',
-    connection: 'postgres://localhost/your_database_name',
-  }
+    client: 'postgres',
+    connection: {
+      host: process.env.DB_HOST || 'localhost',
+      user: process.env.DB_USER || 'inventoryuser',
+      password: process.env.DB_PASSWORD || 'inventorypass',
+      database: process.env.DB_NAME || 'inventorydb',
+      port: process.env.DB_PORT || 5432,
+    },
+    migrations: {
+      directory: './migrations',
+    },
+    seeds: {
+      directory: './seeds',
+    },
+  },
 };
 ```
 
@@ -46,6 +58,7 @@ Start the server:
 node server.js
 ```
 Server runs on: `http://localhost:3001`
+You should see a message that says "Hello world!"
 
 ### 3. Setup the Frontend
 ```bash
